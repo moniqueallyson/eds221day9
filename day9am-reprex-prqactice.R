@@ -12,3 +12,11 @@ mack_creek_lengths <- mack_creek_vertebrates |>
   summarize(mean_length_cm = mean(LENGTH1, na.rm = TRUE),
             sd_length_cm = sd(LENGTH1, na.rm = TRUE),
             .by = species)
+
+ mack_creek_vertebrates |>
+  filter(SPECIES == "ONCL") +
+  ggplot(mapping = aes(x = LENGTH1, y = WEIGHT)) +
+  geom_point() +
+  scale_x_continuous("Cutthroat trout length (cm)") +
+  scale_y_continuous("Weight (g)") +
+  theme_minimal()

@@ -1,0 +1,70 @@
+---
+title: "Stream Chemistry"
+author: 
+    name: "Monique Hernandez"
+    email: mahernandez@ucsb.edu
+    affiliation: 
+    - University of California, Santa Barbara
+    - Masters of Environmental Data Science, 2027
+    - B.S. in Environmental Studies, 2025
+date: "Augustt 20, 2026"
+toc: true
+format:
+  html:
+    theme: "pulse"
+    other-links:
+      - text: Exploratory Data Analysis - EDS 221
+        href: https://eds-221-programming-m26.github.io/course-materials/activities/day9/day9pm-eda.html
+      - text: Monique's website
+        href: moniqueallyson.github.io
+execute:
+  message: false
+  warning: false
+---
+[click here for github link](https://github.com/moniqueallyson/eds221day9)
+
+## Run data
+```{r, message=FALSE}
+library(tidyverse)
+
+reg_chem <- read.csv("data/sbclter_stream_chemistry_allyears_registered_stations_20190628.csv", na = c(-999))
+non_reg_chem <- read.csv("data/sbclter_stream_chemistry_allyears_non_registered_stations_20190628.csv")
+```
+
+## Plot - Summer vs Winter Months
+```{r}
+nutrient_con_reg <- reg_chem |> 
+select(site_code:po4_uM) |> 
+  mutate("Month" = month(ymd_hms(timestamp_local), label = TRUE)) |> 
+  arrange(Month, site_code)
+
+  ggplot(
+  data = nutrient_con_reg,
+    mapping = aes(
+      x = Month,
+      y = nh4_uM
+    )
+) +
+  geom_point()
+facet_wrap(~site_code)
+
+```
+
+## Plot Non-registered - Summer vs Winter Months
+```{r}
+
+nutrient_con_non <- non_reg_chem |> 
+select(site_code:po4_uM) |> 
+   mutate("Month" = month(ymd_hms(timestamp_local), label = TRUE)) |> 
+  arrange(Month, site_code)
+
+ggplot(
+  data = nutrient_con_non,
+    mapping = aes(
+      x = Month,
+      y = po4_uM
+    )
+) +
+  geom_point()
+
+```
